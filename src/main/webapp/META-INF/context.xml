@@ -1,0 +1,12 @@
+<Context>
+
+	<!-- creating connection pool with the database -->
+
+	<Resource name="jdbc/Database" auth="Container"
+		type="javax.sql.DataSource" maxActive="20" maxIdle="3" maxWait="5000"
+		username="WilderRuiz" password="@!@8mKJue%7SP7iU"
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/CourseThings">
+	</Resource>
+
+</Context>
