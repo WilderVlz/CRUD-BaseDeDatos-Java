@@ -1,4 +1,4 @@
-package model;
+package model; 
 
 public class Users {
 
@@ -13,6 +13,7 @@ public class Users {
 		this.address = address;
 		this.country = country;
 		this.salary = salary;
+		 
 
 	}
 

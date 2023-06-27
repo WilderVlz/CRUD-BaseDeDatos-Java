@@ -113,4 +113,81 @@ public class DatabaseQueries {
 
 	}
 
+	public Users updateUser(String ctid) throws Exception {
+
+		Connection connection = null;
+		PreparedStatement preparedQuery = null;
+		ResultSet resultset = null;
+		Users usertToUpdate = null;
+
+		try {
+
+			connection = connectionPool.getConnection();
+
+			preparedQuery = connection.prepareStatement("SELECT * FROM CLIENTS WHERE CTID=?");
+
+			preparedQuery.setString(1, ctid);
+
+			resultset = preparedQuery.executeQuery();
+
+			if (resultset.next()) {
+
+				usertToUpdate = new Users(resultset.getString(1), resultset.getString(2), resultset.getString(3),
+						resultset.getString(4), resultset.getString(5), resultset.getDouble(6));
+
+			} else {
+
+				throw new Exception("Not data found to this id:" + ctid);
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			connection.close();
+			preparedQuery.close();
+			resultset.close();
+		}
+
+		return usertToUpdate;
+
+	}
+
+	public void updateDB(Users updatedUser) throws Exception {
+
+		Connection connectionDB = null;
+		PreparedStatement preparedQuery = null;
+
+		try {
+
+			connectionDB = connectionPool.getConnection();
+
+			preparedQuery = connectionDB.prepareStatement(
+					"UPDATE CLIENTS SET NAME=?, COMPANY=?, ADDRESS=?, COUNTRY=?, SALARY=? WHERE CTID=?");
+
+			preparedQuery.setString(6, updatedUser.getCtid());
+			preparedQuery.setString(1, updatedUser.getName());
+			preparedQuery.setString(2, updatedUser.getCompany());
+			preparedQuery.setString(3, updatedUser.getAddress());
+			preparedQuery.setString(4, updatedUser.getCountry());
+			preparedQuery.setDouble(5, updatedUser.getSalary());
+
+			preparedQuery.execute();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			connectionDB.close();
+			preparedQuery.close();
+
+		}
+
+	}
+
 }

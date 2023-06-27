@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -69,6 +68,25 @@ public class MainController extends HttpServlet {
 
 			addNewUser(request, response);
 
+			break;
+
+		case "update":
+
+			try {
+				updateUser(request, response);
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+
+			break;
+
+		case "updateDB":
+
+			updateDB(request, response);
+
+			break;
+
 		default:
 
 			showUsers(request, response);
@@ -76,6 +94,60 @@ public class MainController extends HttpServlet {
 			break;
 
 		}
+
+	}
+
+	private void updateDB(HttpServletRequest request, HttpServletResponse response) {
+
+		// read new info from form fields
+
+		String ctid = request.getParameter("CTID");
+		String name = request.getParameter("name");
+		String company = request.getParameter("company");
+		String address = request.getParameter("address");
+		String country = request.getParameter("country");
+		double salary = Double.parseDouble(request.getParameter("salary"));
+
+		// saving updated user
+
+		Users updatedUser = new Users(ctid, name, company, address, country, salary);
+
+		// sending updated user to the model
+
+		try {
+
+			modelQueries.updateDB(updatedUser);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		// showing updated users list
+
+		showUsers(request, response);
+
+	}
+
+	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		// read ctid
+
+		String ctid = request.getParameter("CTID");
+
+		// send ctid to model class
+
+		Users idUser = modelQueries.updateUser(ctid);
+
+		// setting attribute to update to the form
+
+		request.setAttribute("userToUpdate", idUser);
+
+		// sending user to the form
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/UpdateUserForm.jsp");
+
+		dispatcher.forward(request, response);
 
 	}
 
@@ -125,7 +197,7 @@ public class MainController extends HttpServlet {
 
 			// sending users to the View
 
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Home.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("./View/Home.jsp");
 
 			dispatcher.forward(request, response);
 

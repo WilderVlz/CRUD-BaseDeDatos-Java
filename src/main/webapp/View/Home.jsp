@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>Home</title>
 
-<link rel="stylesheet" type="text/css" href="styles.css">
+<link rel="stylesheet" type="text/css" href="./Styles/styles.css">
 
 </head>
 <body>
@@ -24,11 +24,21 @@
 			<th class="header">ADDRESS</th>
 			<th class="header">COUNTRY</th>
 			<th class="header">SALARY</th>
+			<th class="header">Method</th>
 
 		</tr>
 
 		<c:forEach var="w" items="${Users}">
-
+			
+			<!--Link to update clients -->
+			
+			<c:url var="updateUser" value="MainController">
+			
+			<c:param name="instruction" value="update"></c:param>
+			<c:param name="CTID" value="${w.ctid}"></c:param>
+			
+			</c:url>
+		
 			<tr>
 
 				<td class="rows">${w.ctid}</td>
@@ -37,6 +47,7 @@
 				<td class="rows">${w.address}</td>
 				<td class="rows">${w.country}</td>
 				<td class="rows">${w.salary}</td>
+				<td id="rows"><a href="${updateUser}">Update </a>
 
 			</tr>
 
