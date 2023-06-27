@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>Home</title>
 
-<link rel="stylesheet" type="text/css" href="./Styles/styles.css">
+<link rel="stylesheet" type="text/css" href="./Styles/stylesHome.css">
 
 </head>
 <body>
