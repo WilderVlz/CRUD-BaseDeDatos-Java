@@ -87,6 +87,12 @@ public class MainController extends HttpServlet {
 
 			break;
 
+		case "delete":
+
+			deleteUser(request, response);
+
+			break;
+
 		default:
 
 			showUsers(request, response);
@@ -94,6 +100,29 @@ public class MainController extends HttpServlet {
 			break;
 
 		}
+
+	}
+
+	private void deleteUser(HttpServletRequest request, HttpServletResponse response) {
+
+		// reading data
+
+		String ctid = request.getParameter("CTID");
+
+		// sending id to model class
+
+		try {
+
+			modelQueries.deleteUser(ctid);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		// showing list of user updated
+
+		showUsers(request, response);
 
 	}
 

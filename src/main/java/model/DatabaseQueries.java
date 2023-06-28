@@ -190,4 +190,32 @@ public class DatabaseQueries {
 
 	}
 
+	public void deleteUser(String ctid) throws Exception {
+
+		Connection connectionDB = null;
+		PreparedStatement preparedQuery = null;
+
+		try {
+
+			connectionDB = connectionPool.getConnection();
+
+			preparedQuery = connectionDB.prepareStatement("DELETE FROM CLIENTS WHERE CTID=?");
+
+			preparedQuery.setString(1, ctid);
+
+			preparedQuery.execute();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			connectionDB.close();
+			preparedQuery.close();
+
+		}
+
+	}
+
 }
