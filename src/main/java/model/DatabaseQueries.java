@@ -10,8 +10,11 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import controller.MainController;
+
 public class DatabaseQueries {
 
+	private String user, password;
 	private Connection connectionDB;
 	private Statement query;
 	private PreparedStatement preparedQuery;
@@ -217,5 +220,95 @@ public class DatabaseQueries {
 		}
 
 	}
+
+	public Users verifyLogin(String user, String password) throws Exception {
+
+		this.user = user;
+		this.password = password;
+
+		Connection connectionDB = null;
+		PreparedStatement preparedQuery = null;
+		ResultSet resultset = null;
+		Users usersN = null;
+
+		try {
+
+			connectionDB = connectionPool.getConnection();
+			preparedQuery = connectionDB.prepareStatement("SELECT * FROM CLIENTS WHERE NAME=? AND COMPANY=?");
+
+			preparedQuery.setString(1, user);
+			preparedQuery.setString(2, password);
+
+			resultset = preparedQuery.executeQuery();
+
+			if (resultset.next()) {
+
+				System.out.println("User is registed");
+
+				usersN = new Users(resultset.getString(1), resultset.getString(2), resultset.getString(3),
+						resultset.getString(4), resultset.getString(5), resultset.getDouble(6));
+
+				System.out.println(resultset.getString(1) + resultset.getString(2) + resultset.getString(3)
+						+ resultset.getString(4) + resultset.getString(5) + resultset.getDouble(6));
+
+			}
+
+			else
+
+				System.out.println("not registed");
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			connectionDB.close();
+			preparedQuery.close();
+			resultset.close();
+
+		}
+
+		return usersN;
+
+	}
+
+//	public Users showUserData() throws Exception {
+//
+//		Connection connectionDB = null;
+//		PreparedStatement preparedQuery = null;
+//		ResultSet resultset = null;
+//		Users userRegistered = null;
+//
+//		try {
+//
+//			connectionDB = connectionPool.getConnection();
+//			preparedQuery = connectionDB.prepareStatement("SELECT * FROM CLIENTS WHERE NAME=? AND COMPANY=?");
+//
+//			preparedQuery.setString(1, user);
+//			preparedQuery.setString(2, password);
+//
+//			resultset = preparedQuery.executeQuery();
+//
+//			if (resultset.next()) {
+//
+//				userRegistered = new Users
+//
+//			}
+//
+//		} catch (Exception e) {
+//
+//			e.printStackTrace();
+//
+//		} finally {
+//
+//			connectionDB.close();
+//			preparedQuery.close();
+//			resultset.close();
+//		}
+//
+//		return userRegistered;
+//
+//	}
 
 }

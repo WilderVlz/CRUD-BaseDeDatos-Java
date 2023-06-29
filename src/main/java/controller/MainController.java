@@ -54,9 +54,26 @@ public class MainController extends HttpServlet {
 		String instruction = request.getParameter("instruction");
 
 		if (instruction == null)
-			instruction = "showUsers";
+			instruction = "Login";
 
 		switch (instruction) {
+
+		case "Login":
+
+			try {
+				Login(request, response);
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+
+			break;
+
+		case "verifyLogin":
+
+			verifyLogin(request, response);
+
+			break;
 
 		case "showUsers":
 
@@ -100,6 +117,39 @@ public class MainController extends HttpServlet {
 			break;
 
 		}
+
+	}
+
+	private void verifyLogin(HttpServletRequest request, HttpServletResponse response) {
+
+		String user = request.getParameter("user");
+
+		String password = request.getParameter("password");
+
+		try {
+
+			Users userRegistered = modelQueries.verifyLogin(user, password);
+
+			request.setAttribute("userR", userRegistered);
+
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/UserRegistered.jsp");
+
+			dispatcher.forward(request, response);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		showUsers(request, response);
+
+	}
+
+	private void Login(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Login.jsp");
+
+		dispatcher.forward(request, response);
 
 	}
 
